@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@types/node": "^14.14.13"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "needle": "^2.5.2",
+    "twit": "^2.2.11"
+  }
+}
