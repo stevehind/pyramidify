@@ -22,7 +22,7 @@ T.get('search/tweets', {
     });
     return to_delete;
 }).then(function (targets) {
-    console.log("Targets: %o", targets);
+    console.log(targets);
     targets.forEach(function (target) {
         T.post('statuses/destroy/:id', {
             id: target.id_str
