@@ -1,57 +1,48 @@
-// useful references
-// https://blog.dennisokeeffe.com/blog/2020-07-11-twitter-bot/
-// https://github.com/ttezel/twit
-// https://developer.twitter.com/en/portal/projects/1338226004934893568/apps/19563410/keys
-// https://developer.twitter.com/en/docs/twitter-api/v1/tweets/search/guides/standard-operators
 
-require('dotenv').config()
-const Twit = require('twit')
+const express = require('express')
+const app = express()
+const port = process.env.port || 3000
+const path = require('path')
 
-const T = new Twit({
-    consumer_key: process.env.TWITTER_API_KEY,
-    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-    access_token: process.env.TWITTER_STEVEHIND_ACCESS_TOKEN,
-    access_token_secret: process.env.TWITTER_STEVEHIND_ACCESS_TOKEN_SECRET,
-  })
+// Import functions
+const utils_queries = require('./utils/queries');
 
-T.get(
-    'search/tweets',
-    {
-        q: 'from:stevehind',
-        count: 100
-    },
-    function(err, data, response): Array<any> {
-        //console.log(data)
-        let statuses: Array<any> = data.statuses
+// Bodyparser middleware
+const bodyParser = require('body-parser');
+app.use(
+    bodyParser.urlencoded({
+      extended: false
+    })
+  );
+app.use(bodyParser.json());
 
-        console.log(`All tweets: ${statuses.length}`);
+// Set up pug templating engine
+app.set('view engine', 'pug')
+app.use(express.static(__dirname + "/public"))
 
-        let to_delete = statuses.filter(tweet => (
-            tweet.in_reply_to_status_id === null &&
-            tweet.retweet_count === 0 &&
-            tweet.favorite_count === 0
-        ))
+app.get('/', function (req, res) {
+    res.render('index')
+})
 
-        console.log(`Length of tweets to delete: ${to_delete.length}`)
+//Return the three best tweets for a given user
+app.post('/lookup', function (req, res) {
+    let handle = req.body.handle
 
-        to_delete.forEach(tweet => {
-            console.log(`Would have deleted tweet id: https://twitter.com/stevehind/status/${tweet.id_str}`)
+    utils_queries.findBestTweets(handle).then(tweets => {
+        return tweets.slice(0,3)
+    }).catch(err => console.error(err))
+    .then(urls => {
+        res.render('name', {
+            title: `@${handle}'s best tweets`,
+            message: `@${handle}'s best recent tweets are...`,
+            tweet_url_1: `${urls[0]}`,
+            tweet_url_2: `${urls[1]}`,
+            tweet_url_3: `${urls[2]}`
         })
-        
-        return to_delete
-    }
-).then(targets => {
-    console.log(targets)
-    
-    targets.forEach(target => {
-        T.post(
-            'statuses/destroy/:id',
-            {
-                id: target.id_str
-            },
-            function(err, data, response) {
-                console.log(data)
-            }
-        )
-    });
+    })
+})
+
+// Run the server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`)
 })

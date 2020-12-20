@@ -1,33 +1,41 @@
-require('dotenv').config();
-var Twit = require('twit');
-var T = new Twit({
-    consumer_key: process.env.TWITTER_API_KEY,
-    consumer_secret: process.env.TWITTER_API_SECRET_KEY,
-    access_token: process.env.TWITTER_STEVEHIND_ACCESS_TOKEN,
-    access_token_secret: process.env.TWITTER_STEVEHIND_ACCESS_TOKEN_SECRET
+var express = require('express');
+var app = express();
+var port = process.env.port || 3000;
+var path = require('path');
+// Import functions
+var utils_queries = require('./utils/queries');
+// Bodyparser middleware
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(bodyParser.json());
+// Set up pug templating engine
+app.set('view engine', 'pug');
+app.use(express.static(__dirname + "/public"));
+app.get('/', function (req, res) {
+    res.render('index');
 });
-T.get('search/tweets', {
-    q: 'from:stevehind',
-    count: 100
-}, function (err, data, response) {
-    //console.log(data)
-    var statuses = data.statuses;
-    console.log("All tweets: " + statuses.length);
-    var to_delete = statuses.filter(function (tweet) { return (tweet.in_reply_to_status_id === null &&
-        tweet.retweet_count === 0 &&
-        tweet.favorite_count === 0); });
-    console.log("Length of tweets to delete: " + to_delete.length);
-    to_delete.forEach(function (tweet) {
-        console.log("Would have deleted tweet id: https://twitter.com/stevehind/status/" + tweet.id_str);
-    });
-    return to_delete;
-}).then(function (targets) {
-    console.log(targets);
-    targets.forEach(function (target) {
-        T.post('statuses/destroy/:id', {
-            id: target.id_str
-        }, function (err, data, response) {
-            console.log(data);
+//Return the three best tweets for a given user
+app.post('/lookup', function (req, res) {
+    //let handle  = req.params.handle
+    console.log("body: %o", req.body);
+    var handle = req.body.handle;
+    console.log("handle: %o", handle);
+    utils_queries.findBestTweets(handle).then(function (tweets) {
+        return tweets.slice(0, 3);
+    })["catch"](function (err) { return console.error(err); })
+        .then(function (urls) {
+        res.render('name', {
+            title: "@" + handle + "'s best tweets",
+            message: "@" + handle + "'s best recent tweets are...",
+            tweet_url_1: "" + urls[0],
+            tweet_url_2: "" + urls[1],
+            tweet_url_3: "" + urls[2]
         });
     });
+});
+// Run the server
+app.listen(port, function () {
+    console.log("Server running at http://localhost:" + port);
 });

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Site</title>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        body { padding-top:50px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <script>
+            var tweet_id = "<%= tweet_id %>";
+            console.log(tweet_id);  
+        </script>
+        <div class="jumbotron">
+            <h1>res.sendFile() Works!</h1>
+            <blockquote class="twitter-tweet">
+                <a href="https://twitter.com/x/status/807811447862468608"></a>
+            </blockquote>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        <div id="tweet"></div>
+    </div>
+
+</body>
+</html>

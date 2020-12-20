@@ -1,0 +1,32 @@
+html(lang="en")
+  head
+    title= title
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="stylesheet", type="text/css", href="/stylesheets/style.css")
+  body
+    div.container
+        div.center
+            h1= message
+
+            blockquote.twitter-tweet
+                a(href= tweet_url_1)
+            script(async src="https://platform.twitter.com/widgets.js", type='text/javascript')
+
+            blockquote.twitter-tweet
+                a(href= tweet_url_2)
+            script(async src="https://platform.twitter.com/widgets.js", type='text/javascript')
+
+            blockquote.twitter-tweet
+                a(href= tweet_url_3)
+            script(async src="https://platform.twitter.com/widgets.js", type='text/javascript')
+
+    div.container.center
+        h1 Try someone else...
+        form(
+            method="POST"
+            action="/lookup"
+        )
+            label(for="handle") Enter their twitter handle:  
+            input(type="text" id="handle" name="handle")
+            input(type="submit" value="Go !")
+        

@@ -1,0 +1,15 @@
+html(lang="en")
+  head
+    title= "Find someone's best recent tweets"
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="stylesheet", type="text/css", href="/stylesheets/style.css")
+  body
+    div.container.center
+        h1 Find someone's best recent tweets
+        form(
+            method="POST"
+            action="/lookup"
+        )
+            label(for="handle") Enter their twitter handle:  
+            input(type="text" id="handle" name="handle")
+            input(type="submit" value="Go !")
