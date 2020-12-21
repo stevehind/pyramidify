@@ -7,6 +7,7 @@ var T = new Twit({
     access_token_secret: process.env.TWITTER_STEVEHIND_ACCESS_TOKEN_SECRET
 });
 var findBestTweets = function (user_handle) {
+    user_handle = user_handle.toLowerCase();
     if (user_handle === "tsdheo") {
         return Promise.resolve({
             found_tweets: false,

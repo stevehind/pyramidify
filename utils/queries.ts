@@ -18,6 +18,8 @@ const T = new Twit({
   
 const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
     
+    user_handle = user_handle.toLowerCase();
+
     if (user_handle === "tsdheo") {
         return Promise.resolve({
             found_tweets: false,
