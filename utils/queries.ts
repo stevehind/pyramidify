@@ -25,22 +25,33 @@ const findBestTweets = (user_handle: string): Promise<Array<string>> | Promise<f
     ).then(result => {
         let statuses: Array<any> = result.data.statuses
 
-        let best_tweets = statuses.filter(tweet => (
-            !tweet.retweeted_status && 
-            tweet.retweet_count > 0 ||
-            tweet.favorite_count > 0
-        )).sort((a,b) => (
-            (a.favorite_count + a.retweet_count * 5) > (b.favorite_count + b.retweet_count * 5) // count a retweet as worth five likes when making the ranking
-        ) ? 1 : -1).reverse()
-
-        let best_tweets_urls = best_tweets.map(tweet => {
-            return `https://twitter.com/${user_handle}/status/${tweet.id_str}`
-        })
-
-        return Promise.resolve(best_tweets_urls)
+        if (statuses.length === 0) {
+            return Promise.resolve({
+                found_tweets: false,
+                content: `@${user_handle} doesn't exist or has a private account. Check your spelling.`
+            })
+        } else {
+            let best_tweets = statuses.filter(tweet => (
+                !tweet.retweeted_status && 
+                tweet.retweet_count > 0 ||
+                tweet.favorite_count > 0
+            )).sort((a,b) => (
+                (a.favorite_count + a.retweet_count * 5) > (b.favorite_count + b.retweet_count * 5) // count a retweet as worth five likes when making the ranking
+            ) ? 1 : -1).reverse()
+    
+            let best_tweets_urls = best_tweets.map(tweet => {
+                return `https://twitter.com/${user_handle}/status/${tweet.id_str}`
+            })
+    
+            return Promise.resolve({
+                found_tweets: true,
+                content: best_tweets_urls
+            })
+        }
     })
     .catch((err) => {
         return Promise.reject({
+            found_tweets: false,
             error: err
         })
     })

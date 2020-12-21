@@ -28,18 +28,34 @@ app.get('/', function (req, res) {
 app.post('/lookup', function (req, res) {
     let handle = req.body.handle
 
-    utils_queries.findBestTweets(handle).then(tweets => {
-        return tweets.slice(0,3)
-    }).catch(err => console.error(err))
-    .then(urls => {
+    if (handle === 'tsdheo') {
         res.render('name', {
             title: `@${handle}'s best tweets`,
             message: `@${handle}'s best recent tweets are...`,
-            tweet_url_1: `${urls[0]}`,
-            tweet_url_2: `${urls[1]}`,
-            tweet_url_3: `${urls[2]}`
+            easter_egg: `Wow, that's weird, we can't find any good tweets for @${handle}. Don't give up, you'll get there one day.`
         })
-    })
+    } else {
+        utils_queries.findBestTweets(handle).then(result => {
+            if (result.found_tweets) {
+                let urls = result.content;
+
+                res.render('name', {
+                    title: `@${handle}'s best tweets`,
+                    message: `@${handle}'s best recent tweets are...`,
+                    tweet_url_1: `${urls[0]}`,
+                    tweet_url_2: `${urls[1]}`,
+                    tweet_url_3: `${urls[2]}`
+                })
+            } else {
+                console.log("Result was: %o", result)
+
+                res.render('name', {
+                    title: 'foobar'
+                })
+            }
+        })
+        .catch(err => { console.error(err)})
+    }
 })
 
 // Run the server

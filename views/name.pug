@@ -7,6 +7,12 @@ html(lang="en")
     div.container
         div.center
             h1= message
+            h4
+              | Tweets are ranked using a proprietary algorithm.
+            p
+              | (Twitter won't allow API access to tweet engagement stats without contacting their enterprise sales team... so... Boo. Tweets are ranked by favs + RTs * 5)
+
+            h3= easter_egg
 
             blockquote.twitter-tweet
                 a(href= tweet_url_1)
