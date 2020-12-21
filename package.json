@@ -14,6 +14,7 @@
   "scripts": {
     "test": "jest",
     "compile": "tsc --build tsconfig.json",
-    "dev": "npm run compile && npm run test"
+    "dev": "npm run compile && npm run test",
+    "start": "node server.js"
   }
 }
