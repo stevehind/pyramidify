@@ -28,34 +28,35 @@ app.get('/', function (req, res) {
 app.post('/lookup', function (req, res) {
     let handle = req.body.handle
 
-    if (handle === 'tsdheo') {
-        res.render('name', {
-            title: `@${handle}'s best tweets`,
-            message: `@${handle}'s best recent tweets are...`,
-            easter_egg: `Wow, that's weird, we can't find any good tweets for @${handle}. Don't give up, you'll get there one day.`
-        })
-    } else {
-        utils_queries.findBestTweets(handle).then(result => {
-            if (result.found_tweets) {
-                let urls = result.content;
+    utils_queries.findBestTweets(handle).then(result => {
+        if (result.found_tweets) {
+            let urls = result.content;
 
-                res.render('name', {
-                    title: `@${handle}'s best tweets`,
-                    message: `@${handle}'s best recent tweets are...`,
-                    tweet_url_1: `${urls[0]}`,
-                    tweet_url_2: `${urls[1]}`,
-                    tweet_url_3: `${urls[2]}`
-                })
-            } else {
-                console.log("Result was: %o", result)
-
-                res.render('name', {
-                    title: 'foobar'
-                })
-            }
-        })
-        .catch(err => { console.error(err)})
-    }
+            res.render('name', {
+                title: `@${handle}'s best tweets`,
+                message: `@${handle}'s best recent tweets are...`,
+                tweet_url_1: `${urls[0]}`,
+                tweet_url_2: `${urls[1]}`,
+                tweet_url_3: `${urls[2]}`
+            })
+        } else if (result.not_found_message) {
+            res.render('name', {
+                title: 'Try someone else',
+                message: `${result.not_found_message}`
+            })
+        } else if (result.tsdheo) {
+            res.render('name', ({
+                title: 'Doug only does bad tweets',
+                message: `${result.tsdheo}`
+            }))
+        } else if (result.error) {
+            res.resnder('name', {
+                title: 'Try again',
+                message: "We couldn't recongize that input. Try again!"
+            })
+        }
+    })
+    .catch(err => { console.error(err)})
 })
 
 // Run the server

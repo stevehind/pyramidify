@@ -10,42 +10,79 @@ test('returns the best tweet from the list as of 2020-12-20', async() => {
     ).toBe("https://twitter.com/stevehind/status/1337858090427842562");
 })
 
-test('returns a special message if user does not exist', async() => {
+
+test("returns found_tweet false and not_found_message if user doesn't exist", async() => {
     expect(
         await queries.findBestTweets('stevehindzz')
         .then(result => {
-            return result.content
+            return result
         })
         .catch(error => {
             return error
         })
-    ).toBe(
-        "@stevehindzz doesn't exist or has a private account. Check your spelling."
-        )
+    ).toStrictEqual({
+        found_tweets: false,
+        not_found_message: "@stevehindzz doesn't exist or has a private account. Check your spelling."
+    })
 })
 
-test('returns found_tweets as false if user string is provided but user does not exist', async() => {
-    expect(
-        await queries.findBestTweets('stevehindzz')
-        .then(result => {
-            return result.found_tweets
-        })
-        .catch(error => {
-            return error
-        })
-    ).toBe(false)
-})
-
-test('returns found_tweets as false if user input is blank', async() => {
+test('returns found_tweets as false if user input is undefined', async() => {
     expect(
         await queries.findBestTweets('')
         .then(result => {
-            result.found_tweets
+            return result
         })
         .catch(error => {
-            console.log("Error is: %o", error)
             return error
         })
-    ).toBe(false)
+    ).toStrictEqual({
+        found_tweets: false,
+        error: 'No input or undefined input.'
+    })
+})
+
+test('makes fund of doug is the user is tsdheo', async() => {
+    expect(
+        await queries.findBestTweets('tsdheo')
+        .then(result => {
+            return result
+        })
+        .catch(error => {
+            return error
+        })
+    ).toStrictEqual({
+        found_tweets: false,
+        tsdheo: "Wow, that's weird, we can't find any good tweets for @tsdheo. Checks out, I guess."
+    })
+})
+
+test('returns a private account response for a private account', async() => {
+    expect(
+        await queries.findBestTweets('davidtrinh')
+        .then(result => {
+            return result
+        })
+        .catch(error => {
+            return error
+        })
+    ).toStrictEqual({
+        found_tweets: false,
+        not_found_message: "@davidtrinh doesn't exist or has a private account. Check your spelling."
+    })
+})
+
+test('returns found_tweets false and error when user is {space}', async() => {
+    expect(
+        await queries.findBestTweets(' ')
+        .then(result => {
+            return result
+        })
+        .catch(error => {
+            return error
+        })
+    ).toStrictEqual({
+        found_tweets: false,
+        error: "This user has no recent good tweets (at least as defined by the crowd...)."
+    })
 })
 
