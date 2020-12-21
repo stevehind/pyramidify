@@ -21,7 +21,7 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
     if (user_handle === "tsdheo") {
         return Promise.resolve({
             found_tweets: false,
-            tsdheo: `Wow, that's weird, we can't find any good tweets for @${user_handle}. Checks out, I guess.`
+            tsdheo: `Wow, that's weird, we can't find any good tweets by @${user_handle}. Checks out, I guess.`
         })
     }
     else if (user_handle) {

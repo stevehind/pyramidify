@@ -52,7 +52,7 @@ test('makes fund of doug is the user is tsdheo', async() => {
         })
     ).toStrictEqual({
         found_tweets: false,
-        tsdheo: "Wow, that's weird, we can't find any good tweets for @tsdheo. Checks out, I guess."
+        tsdheo: "Wow, that's weird, we can't find any good tweets by @tsdheo. Checks out, I guess."
     })
 })
 

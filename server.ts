@@ -50,7 +50,7 @@ app.post('/lookup', function (req, res) {
                 message: `${result.tsdheo}`
             }))
         } else if (result.error) {
-            res.resnder('name', {
+            res.render('name', {
                 title: 'Try again',
                 message: "We couldn't recongize that input. Try again!"
             })

@@ -3,9 +3,22 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.header {
+    background-color: lightgray;
+    text-align: right;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    padding: 1px;
+}
+
+.header-test {
+    padding: 1px;
+}
+
 .center {
     margin: auto;
     width: 80%;
     border: 3px;
     padding: 10px;
 }
+

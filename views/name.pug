@@ -3,12 +3,21 @@ html(lang="en")
     title= title
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
     link(rel="stylesheet", type="text/css", href="/stylesheets/style.css")
+
   body
+    div.header
+      h4.header-text
+      | Another dumb project by 
+      a(href='http://stevehind.me') Steve
+      | .
+
     div.container
         div.center
             h1= message
+            
             h4
               | Tweets are ranked using a proprietary algorithm.
+            
             p
               | (Twitter won't allow API access to tweet engagement stats without contacting their enterprise sales team... so... Boo. Tweets are ranked by favs + RTs * 5)
 
