@@ -9,10 +9,16 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     width: 100%;
     padding: 1px;
+    border: 1px;
 }
 
-.header-test {
-    padding: 1px;
+.footer {
+    background-color:lightgoldenrodyellow;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    padding: 3px;
+    border: 3px;
 }
 
 .center {
