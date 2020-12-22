@@ -20,12 +20,11 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
     
     if (user_handle != undefined) {
         user_handle = user_handle.toLowerCase();
+        if (user_handle.charAt(0) === '@') {
+            user_handle = user_handle.substring(1)
+        }
     } 
 
-    if (user_handle.charAt(0) === '@') {
-        user_handle = user_handle.substring(1)
-    }
-    
     if (user_handle === "tsdheo") {
         return Promise.resolve({
             handle: user_handle,

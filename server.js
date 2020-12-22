@@ -20,8 +20,8 @@ app.get('/', function (req, res) {
 app.get('/handle/', function (req, res) {
     var supplied_handle = req.query.handle;
     utils_queries.findBestTweets(supplied_handle).then(function (result) {
+        // Handle different responses from the function
         if (result.found_tweets) {
-            console.log("Found: %o", result);
             var urls = result.content;
             res.render('name', {
                 title: "@" + result.handle + "'s best tweets",
