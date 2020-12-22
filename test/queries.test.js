@@ -7,7 +7,7 @@ test('returns the best tweet from the list as of 2020-12-20', async() => {
         await queries.findBestTweets('stevehind')
         .then(result => {return result.content[0]})
         .catch(error => {return error})
-    ).toBe("https://twitter.com/stevehind/status/1337858090427842562");
+    ).toBe("https://twitter.com/stevehind/status/1341227705207910400");
 })
 
 
