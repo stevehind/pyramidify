@@ -25,8 +25,10 @@ app.get('/', function (req, res) {
 })
 
 //Return the three best tweets for a given user
-app.post('/lookup', function (req, res) {
-    let handle = req.body.handle
+app.get('/handle/', function (req, res) {
+    let handle = req.query.handle
+
+    console.log(`handle is: ${handle}`)
 
     utils_queries.findBestTweets(handle).then(result => {
         if (result.found_tweets) {

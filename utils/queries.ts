@@ -18,8 +18,10 @@ const T = new Twit({
   
 const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
     
-    user_handle = user_handle.toLowerCase();
-
+    if (user_handle != undefined) {
+        user_handle = user_handle.toLowerCase();
+    } 
+    
     if (user_handle === "tsdheo") {
         return Promise.resolve({
             found_tweets: false,
@@ -76,7 +78,7 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
             })
         })
     } else {
-        return Promise.reject({
+        return Promise.resolve({
             found_tweets: false,
             error: 'No input or undefined input.'
         })
