@@ -26,15 +26,18 @@ app.get('/', function (req, res) {
 
 //Return the three best tweets for a given user
 app.get('/handle/', function (req, res) {
-    let handle = req.query.handle
+    let supplied_handle = req.query.handle
 
-    utils_queries.findBestTweets(handle).then(result => {
+    utils_queries.findBestTweets(supplied_handle).then(result => {
+        // Handle different responses from the function
         if (result.found_tweets) {
+            console.log("Found: %o", result)
+            
             let urls = result.content;
 
             res.render('name', {
-                title: `@${handle}'s best tweets`,
-                message: `@${handle}'s best recent tweets are...`,
+                title: `@${result.handle}'s best tweets`,
+                message: `@${result.handle}'s best recent tweets are...`,
                 tweet_url_1: `${urls[0]}`,
                 tweet_url_2: `${urls[1]}`,
                 tweet_url_3: `${urls[2]}`

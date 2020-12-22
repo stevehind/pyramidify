@@ -21,9 +21,14 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
     if (user_handle != undefined) {
         user_handle = user_handle.toLowerCase();
     } 
+
+    if (user_handle.charAt(0) === '@') {
+        user_handle = user_handle.substring(1)
+    }
     
     if (user_handle === "tsdheo") {
         return Promise.resolve({
+            handle: user_handle,
             found_tweets: false,
             tsdheo: `Wow, that's weird, we can't find any good tweets by @${user_handle}. Checks out, I guess.`
         })
@@ -42,6 +47,7 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
     
             if (statuses.length === 0) {
                 return Promise.resolve({
+                    handle: user_handle,
                     found_tweets: false,
                     not_found_message: `@${user_handle} doesn't exist or has a private account. Check your spelling.`
                 })
@@ -60,11 +66,13 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
                     })
             
                     return Promise.resolve({
+                        handle: user_handle,
                         found_tweets: true,
                         content: best_tweets_urls
                     })
                 } else {
                     return Promise.resolve({
+                        handle: user_handle,
                         found_tweets: false,
                         error: "This user has no recent good tweets (at least as defined by the crowd...)."
                     })
@@ -73,12 +81,14 @@ const findBestTweets = (user_handle: string): Promise<findBestTweetsResult> => {
         })
         .catch((err) => {
             return Promise.reject({
+                handle: user_handle,
                 found_tweets: false,
                 error: err
             })
         })
     } else {
         return Promise.resolve({
+            handle: user_handle,
             found_tweets: false,
             error: 'No input or undefined input.'
         })

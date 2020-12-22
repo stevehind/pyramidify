@@ -18,14 +18,14 @@ app.get('/', function (req, res) {
 });
 //Return the three best tweets for a given user
 app.get('/handle/', function (req, res) {
-    var handle = req.query.handle;
-    console.log("handle is: " + handle);
-    utils_queries.findBestTweets(handle).then(function (result) {
+    var supplied_handle = req.query.handle;
+    utils_queries.findBestTweets(supplied_handle).then(function (result) {
         if (result.found_tweets) {
+            console.log("Found: %o", result);
             var urls = result.content;
             res.render('name', {
-                title: "@" + handle + "'s best tweets",
-                message: "@" + handle + "'s best recent tweets are...",
+                title: "@" + result.handle + "'s best tweets",
+                message: "@" + result.handle + "'s best recent tweets are...",
                 tweet_url_1: "" + urls[0],
                 tweet_url_2: "" + urls[1],
                 tweet_url_3: "" + urls[2]

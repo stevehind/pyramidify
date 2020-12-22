@@ -10,8 +10,12 @@ var findBestTweets = function (user_handle) {
     if (user_handle != undefined) {
         user_handle = user_handle.toLowerCase();
     }
+    if (user_handle.charAt(0) === '@') {
+        user_handle = user_handle.substring(1);
+    }
     if (user_handle === "tsdheo") {
         return Promise.resolve({
+            handle: user_handle,
             found_tweets: false,
             tsdheo: "Wow, that's weird, we can't find any good tweets by @" + user_handle + ". Checks out, I guess."
         });
@@ -25,6 +29,7 @@ var findBestTweets = function (user_handle) {
             var statuses = result.data.statuses;
             if (statuses.length === 0) {
                 return Promise.resolve({
+                    handle: user_handle,
                     found_tweets: false,
                     not_found_message: "@" + user_handle + " doesn't exist or has a private account. Check your spelling."
                 });
@@ -39,12 +44,14 @@ var findBestTweets = function (user_handle) {
                         return "https://twitter.com/" + user_handle + "/status/" + tweet.id_str;
                     });
                     return Promise.resolve({
+                        handle: user_handle,
                         found_tweets: true,
                         content: best_tweets_urls
                     });
                 }
                 else {
                     return Promise.resolve({
+                        handle: user_handle,
                         found_tweets: false,
                         error: "This user has no recent good tweets (at least as defined by the crowd...)."
                     });
@@ -52,6 +59,7 @@ var findBestTweets = function (user_handle) {
             }
         })["catch"](function (err) {
             return Promise.reject({
+                handle: user_handle,
                 found_tweets: false,
                 error: err
             });
@@ -59,6 +67,7 @@ var findBestTweets = function (user_handle) {
     }
     else {
         return Promise.resolve({
+            handle: user_handle,
             found_tweets: false,
             error: 'No input or undefined input.'
         });

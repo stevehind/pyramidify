@@ -21,6 +21,7 @@ test("returns found_tweet false and not_found_message if user doesn't exist", as
             return error
         })
     ).toStrictEqual({
+        handle: 'stevehindzz',
         found_tweets: false,
         not_found_message: "@stevehindzz doesn't exist or has a private account. Check your spelling."
     })
@@ -36,6 +37,7 @@ test('returns found_tweets as false if user input is undefined', async() => {
             return error
         })
     ).toStrictEqual({
+        handle: '',
         found_tweets: false,
         error: 'No input or undefined input.'
     })
@@ -51,6 +53,7 @@ test('makes fund of doug is the user is tsdheo', async() => {
             return error
         })
     ).toStrictEqual({
+        handle: 'tsdheo',
         found_tweets: false,
         tsdheo: "Wow, that's weird, we can't find any good tweets by @tsdheo. Checks out, I guess."
     })
@@ -66,6 +69,7 @@ test('returns a private account response for a private account', async() => {
             return error
         })
     ).toStrictEqual({
+        handle: 'davidtrinh',
         found_tweets: false,
         not_found_message: "@davidtrinh doesn't exist or has a private account. Check your spelling."
     })
@@ -81,8 +85,21 @@ test('returns found_tweets false and error when user is {space}', async() => {
             return error
         })
     ).toStrictEqual({
+        handle: ' ',
         found_tweets: false,
         error: "This user has no recent good tweets (at least as defined by the crowd...)."
     })
+})
+
+test('strips @ from the start of a handle', async() => {
+    expect(
+        await queries.findBestTweets('@stevehind')
+        .then(result => {
+            return result.handle
+        })
+        .catch(error => {
+            return error
+        })
+    ).toBe('stevehind')
 })
 
