@@ -1,5 +1,5 @@
-# My best tweets
-An app to your show your best recent tweets.
+# Find good tweets
+An app to your find a user's best recent tweets.
 
 ## Setup
 App assumes you have a .env file in your directory root formatted as:
