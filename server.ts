@@ -31,7 +31,6 @@ app.get('/handle/', function (req, res) {
     utils_queries.findBestTweets(supplied_handle).then(result => {
         // Handle different responses from the function
         if (result.found_tweets) {
-            console.log("Found: %o", result)
             
             let urls = result.content;
 
