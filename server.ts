@@ -28,6 +28,8 @@ app.get('/', function (req, res) {
 app.get('/handle/', function (req, res) {
     let supplied_handle = req.query.handle
 
+    console.log(`Supplied handle was: ${supplied_handle}.`)
+
     utils_queries.findBestTweets(supplied_handle).then(result => {
         // Handle different responses from the function
         if (result.found_tweets) {
