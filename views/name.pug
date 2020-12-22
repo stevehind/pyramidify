@@ -6,8 +6,8 @@ html(lang="en")
 
   body
 
-    div.container
-        div.center
+    div.container.center
+        div.center.text-center
             h1= message
             
             h4
@@ -30,7 +30,7 @@ html(lang="en")
                 a(href= tweet_url_3)
             script(async src="https://platform.twitter.com/widgets.js", type='text/javascript')
 
-    div.container.center
+    div.container.center.text-center
         h1 Try someone else...
         form(
             method="POST"
@@ -40,7 +40,7 @@ html(lang="en")
             input(type="text" id="handle" name="handle")
             input(type="submit" value="Go !")
     
-    div.container.footer
+    div.container.footer.text-center
       p
         | © 
         a(href='http://stevehind.me') Steve
