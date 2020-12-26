@@ -19,6 +19,7 @@ app.get('/', function (req, res) {
 //Return the three best tweets for a given user
 app.get('/handle/', function (req, res) {
     var supplied_handle = req.query.handle;
+    console.log("Supplied handle was: " + supplied_handle + ".");
     utils_queries.findBestTweets(supplied_handle).then(function (result) {
         // Handle different responses from the function
         if (result.found_tweets) {

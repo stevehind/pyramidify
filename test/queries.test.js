@@ -2,12 +2,12 @@ const { timeStamp } = require('console')
 const { hasUncaughtExceptionCaptureCallback } = require('process')
 const queries = require('../utils/queries')
 
-test('returns the best tweet from the list as of 2020-12-20', async() => {
+test('returns the best tweet from the list as of 2020-12-26', async() => {
     expect(
         await queries.findBestTweets('stevehind')
         .then(result => {return result.content[0]})
         .catch(error => {return error})
-    ).toBe("https://twitter.com/stevehind/status/1341227705207910400");
+    ).toBe("https://twitter.com/stevehind/status/1341626330954170368");
 })
 
 
