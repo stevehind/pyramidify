@@ -1,21 +1,26 @@
 html(lang="en")
   head
-    title= "Find someone's best recent tweets"
+    title= "Pyramid-ify your writing!"
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
     link(rel="stylesheet", type="text/css", href="/stylesheets/style.css")
   body
     div.container.center.text-center
-        h1 Find someone's best recent tweets
+        h1 Pyramid-ify your writing!
+        h3 Apply the 'pyramid principle' to your writing: start with the answer, and substantiate it with further points. Stop buying the lede!
         form(
             method="GET"
-            action="/handle/"
+            action="/prompt/"
         )
-            label(for="handle") Enter their twitter handle:  
-            input(type="text" id="handle" name="handle")
-            input(type="submit" value="Go !")
+            label(for="prompt") Enter what you want to pyramid-ify:
+            br 
+            textarea#prompt(name="prompt" rows="10" cols="100")
+            br
+            br
+            //- a button, lablled "Go !" with nice styling
+            input(type="submit" value="Go !" class="button")
     
     div.container.footer.text-center
       p
         | © 
         a(href='http://stevehind.me') Steve
-        | , 2020.
+        | , 2022.

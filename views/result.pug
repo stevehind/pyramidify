@@ -1,0 +1,45 @@
+html(lang="en")
+  head
+    title
+      | Pyramid-ify your writing!
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="stylesheet", type="text/css", href="/stylesheets/style.css")
+
+  body
+
+    div.container.center
+        div.center.text-center
+          h1
+            | Pyramid-ified!!
+        
+        div.center.text-left  
+            h3
+              | Here's your pyramid-ified text:
+            p= result
+            em
+              | These results are 'stochastic' - they're randomly generated, so you'll get different results each time you run the same text through the pyramidifier. The results may even be bad or random. Refresh to re-roll...
+            br
+            h3
+              | Here's your original text:
+            p= prompt
+    
+    div.container.center
+      div.center.text-center
+        h2
+          | Try another one:
+        form(
+              method="GET"
+              action="/prompt/"
+          )
+              label(for="prompt") Enter what you want to pyramid-ify:
+              br 
+              textarea#prompt(name="prompt" rows="10" cols="50")
+              br
+              input(type="submit" value="Go !")
+
+    div.container.footer.text-center
+      p
+        | © 
+        a(href='http://stevehind.me') Steve
+        | , 2022.
+        

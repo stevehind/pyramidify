@@ -3,9 +3,7 @@ const express = require('express')
 const app = express()
 const port = process.env.port || 3000
 const path = require('path')
-
-// Import functions
-const utils_queries = require('./utils/queries');
+import getGeneratedResponse from './response'
 
 // Bodyparser middleware
 const bodyParser = require('body-parser');
@@ -24,43 +22,18 @@ app.get('/', function (req, res) {
     res.render('index')
 })
 
-//Return the three best tweets for a given user
-app.get('/handle/', function (req, res) {
-    let supplied_handle = req.query.handle;
+// Return the prompt and its result
+app.get('/prompt/', function (req, res) {
+    let prompt: string = req.query.prompt;
 
-    console.log(`Supplied handle was: ${supplied_handle}.`);
-
-    utils_queries.findBestTweets(supplied_handle).then(result => {
-        // Handle different responses from the function
-        if (result.found_tweets) {
-            
-            let urls = result.content;
-
-            res.render('name', {
-                title: `@${result.handle}'s best tweets`,
-                message: `@${result.handle}'s best recent tweets are...`,
-                tweet_url_1: `${urls[0]}`,
-                tweet_url_2: `${urls[1]}`,
-                tweet_url_3: `${urls[2]}`
-            })
-        } else if (result.not_found_message) {
-            res.render('name', {
-                title: 'Try someone else',
-                message: `${result.not_found_message}`
-            })
-        } else if (result.tsdheo) {
-            res.render('name', ({
-                title: 'Doug only does bad tweets',
-                message: `${result.tsdheo}`
-            }))
-        } else if (result.error) {
-            res.render('name', {
-                title: 'Try again',
-                message: "We couldn't recongize that input. Try again!"
-            })
-        }
+    getGeneratedResponse(prompt).then((result) => {
+        let displayResult = result;
+        res.render('result', {prompt: prompt, result: displayResult})
     })
-    .catch(err => { console.error(err)})
+    .catch((err) => {
+        console.log(err.message);
+        res.render('result', {prompt: prompt, result: "Error"})
+    })
 })
 
 // Run the server

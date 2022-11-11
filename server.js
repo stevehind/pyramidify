@@ -1,9 +1,10 @@
+"use strict";
+exports.__esModule = true;
 var express = require('express');
 var app = express();
 var port = process.env.port || 3000;
 var path = require('path');
-// Import functions
-var utils_queries = require('./utils/queries');
+var response_1 = require("./response");
 // Bodyparser middleware
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
@@ -16,41 +17,16 @@ app.use(express.static(__dirname + "/public"));
 app.get('/', function (req, res) {
     res.render('index');
 });
-//Return the three best tweets for a given user
-app.get('/handle/', function (req, res) {
-    var supplied_handle = req.query.handle;
-    console.log("Supplied handle was: " + supplied_handle + ".");
-    utils_queries.findBestTweets(supplied_handle).then(function (result) {
-        // Handle different responses from the function
-        if (result.found_tweets) {
-            var urls = result.content;
-            res.render('name', {
-                title: "@" + result.handle + "'s best tweets",
-                message: "@" + result.handle + "'s best recent tweets are...",
-                tweet_url_1: "" + urls[0],
-                tweet_url_2: "" + urls[1],
-                tweet_url_3: "" + urls[2]
-            });
-        }
-        else if (result.not_found_message) {
-            res.render('name', {
-                title: 'Try someone else',
-                message: "" + result.not_found_message
-            });
-        }
-        else if (result.tsdheo) {
-            res.render('name', ({
-                title: 'Doug only does bad tweets',
-                message: "" + result.tsdheo
-            }));
-        }
-        else if (result.error) {
-            res.render('name', {
-                title: 'Try again',
-                message: "We couldn't recongize that input. Try again!"
-            });
-        }
-    })["catch"](function (err) { console.error(err); });
+// Return the prompt and its result
+app.get('/prompt/', function (req, res) {
+    var prompt = req.query.prompt;
+    response_1["default"](prompt).then(function (result) {
+        var displayResult = result;
+        res.render('result', { prompt: prompt, result: displayResult });
+    })["catch"](function (err) {
+        console.log(err.message);
+        res.render('result', { prompt: prompt, result: "Error" });
+    });
 });
 // Run the server
 app.listen(port, function () {
