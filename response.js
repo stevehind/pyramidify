@@ -43,13 +43,12 @@ var configuration = new Configuration({
 });
 var openai = new OpenAIApi(configuration);
 var getGeneratedResponse = function (user_prompt) { return __awaiter(void 0, void 0, void 0, function () {
-    var pyramidal_prompt, prompt_to_provide, response, filtered_response, array_to_cleanse_from, cleaned_response;
+    var pyramidal_prompt, prompt_to_provide, response, response_text, array_to_cleanse_from, responseCleaner, clean_response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 pyramidal_prompt = 'Re-write the text above to be in accordance with the "pyramid principle", which leads with the conclusion, and then provides supporting points. Write concisely and use short, clear sentences.';
                 prompt_to_provide = "\n    \"\"\"\n    " + user_prompt + "\n    \"\"\"\n    " + pyramidal_prompt + "\n    ";
-                console.log("The prompt to provide is:\n        " + prompt_to_provide);
                 return [4 /*yield*/, openai.createCompletion({
                         model: "text-davinci-002",
                         prompt: prompt_to_provide,
@@ -58,22 +57,32 @@ var getGeneratedResponse = function (user_prompt) { return __awaiter(void 0, voi
                     })];
             case 1:
                 response = _a.sent();
-                filtered_response = response.data.choices[0].text;
+                response_text = response.data.choices[0].text;
                 array_to_cleanse_from = [
-                    'The "pyramid principle" states that the conclusion should be stated first, followed by the supporting points.',
-                    'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.',
-                    'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle":',
-                    'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points.'
+                    // Common bad second sentences
+                    'In other words, start with the answer, and then provide the evidence',
+                    'In other words, the conclusion should be at the top of the pyramid, with the supporting points below',
+                    'In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle"'
                 ];
-                cleaned_response = function (filtered_response, array_to_cleanse_from) {
-                    for (var i = 0; i < array_to_cleanse_from.length; i++) {
-                        if (filtered_response.includes(array_to_cleanse_from[i])) {
-                            filtered_response = filtered_response.replace(array_to_cleanse_from[i], '');
-                        }
+                responseCleaner = function (response, array_to_cleanse_from) {
+                    if (response.includes('The "pyramid principle" states that')) {
+                        console.log('Starts with the offending phrase');
+                        var start = response.indexOf('.') + 1;
+                        var end = response.length;
+                        return response.substring(start, end);
                     }
-                    return filtered_response;
+                    else {
+                        console.log('Does not start with the offending phrase');
+                        for (var i = 0; i < array_to_cleanse_from.length; i++) {
+                            if (response.includes(array_to_cleanse_from[i])) {
+                                response = response.replace(array_to_cleanse_from[i], '');
+                            }
+                        }
+                        return response;
+                    }
                 };
-                return [2 /*return*/, filtered_response];
+                clean_response = responseCleaner(response_text, array_to_cleanse_from);
+                return [2 /*return*/, clean_response];
         }
     });
 }); };

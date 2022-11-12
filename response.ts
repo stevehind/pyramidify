@@ -16,10 +16,10 @@ const getGeneratedResponse = async (user_prompt: string): Promise<string> => {
     """
     ${pyramidal_prompt}
     `
-    console.log(
-        `The prompt to provide is:
-        ${prompt_to_provide}`
-    )
+    // console.log(
+    //     `The prompt to provide is:
+    //     ${prompt_to_provide}`
+    // )
 
     const response = await openai.createCompletion({
         model: "text-davinci-002",
@@ -28,26 +28,35 @@ const getGeneratedResponse = async (user_prompt: string): Promise<string> => {
         max_tokens: 800,
     });
 
-    let filtered_response = response.data.choices[0].text
+    let response_text = response.data.choices[0].text
 
     let array_to_cleanse_from: Array<string> = [
-        'The "pyramid principle" states that the conclusion should be stated first, followed by the supporting points.',
-        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.',
-        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle":',
-        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points.'
+        // Common bad second sentences
+        'In other words, start with the answer, and then provide the evidence',
+        'In other words, the conclusion should be at the top of the pyramid, with the supporting points below',
+        'In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle"'
     ]
 
-    // function that checks whether filtered_response contains any of the strings in array_to_cleanse_from and if it does, replaces them with '' and returns the updated response
-    const cleaned_response = (filtered_response: string, array_to_cleanse_from: Array<string>): string => {
-        for (let i = 0; i < array_to_cleanse_from.length; i++) {
-            if (filtered_response.includes(array_to_cleanse_from[i])) {
-                filtered_response = filtered_response.replace(array_to_cleanse_from[i], '')
+    const responseCleaner = (response: string, array_to_cleanse_from: Array<string>): string => {
+        if (response.includes('The "pyramid principle" states that')) {
+            console.log('Starts with the offending phrase')
+            let start = response.indexOf('.') + 1;
+            let end = response.length;
+            return response.substring(start, end);
+        } else {
+            console.log('Does not start with the offending phrase')
+            for (let i = 0; i < array_to_cleanse_from.length; i++) {
+                if (response.includes(array_to_cleanse_from[i])) {
+                    response = response.replace(array_to_cleanse_from[i], '')
+                }
             }
+            return response
         }
-        return filtered_response
     }
 
-    return filtered_response
+    let clean_response = responseCleaner(response_text,array_to_cleanse_from)
+
+    return clean_response
 }
 
 export default getGeneratedResponse
