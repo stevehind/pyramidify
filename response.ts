@@ -38,7 +38,9 @@ const getGeneratedResponse = async (user_prompt: string): Promise<completion> =>
 
     let filtered_response = response.data.choices[0].text
 
-    return filtered_response
+    let cleaned_response = filtered_response.replace('The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.', '')
+
+    return cleaned_response
 }
 
 export default getGeneratedResponse
