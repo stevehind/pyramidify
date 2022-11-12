@@ -32,7 +32,9 @@ const getGeneratedResponse = async (user_prompt: string): Promise<string> => {
 
     let array_to_cleanse_from: Array<string> = [
         'The "pyramid principle" states that the conclusion should be stated first, followed by the supporting points.',
-        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.'
+        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.',
+        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle":',
+        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points.'
     ]
 
     // function that checks whether filtered_response contains any of the strings in array_to_cleanse_from and if it does, replaces them with '' and returns the updated response

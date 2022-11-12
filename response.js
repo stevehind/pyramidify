@@ -43,7 +43,7 @@ var configuration = new Configuration({
 });
 var openai = new OpenAIApi(configuration);
 var getGeneratedResponse = function (user_prompt) { return __awaiter(void 0, void 0, void 0, function () {
-    var pyramidal_prompt, prompt_to_provide, response, filtered_response;
+    var pyramidal_prompt, prompt_to_provide, response, filtered_response, array_to_cleanse_from, cleaned_response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -59,6 +59,20 @@ var getGeneratedResponse = function (user_prompt) { return __awaiter(void 0, voi
             case 1:
                 response = _a.sent();
                 filtered_response = response.data.choices[0].text;
+                array_to_cleanse_from = [
+                    'The "pyramid principle" states that the conclusion should be stated first, followed by the supporting points.',
+                    'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.',
+                    'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle":',
+                    'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points.'
+                ];
+                cleaned_response = function (filtered_response, array_to_cleanse_from) {
+                    for (var i = 0; i < array_to_cleanse_from.length; i++) {
+                        if (filtered_response.includes(array_to_cleanse_from[i])) {
+                            filtered_response = filtered_response.replace(array_to_cleanse_from[i], '');
+                        }
+                    }
+                    return filtered_response;
+                };
                 return [2 /*return*/, filtered_response];
         }
     });
