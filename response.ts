@@ -6,15 +6,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-interface completion {
-    id: string,
-    object: string,
-    created: number,
-    model: string,
-    choices: Array<any>
-}
-
-const getGeneratedResponse = async (user_prompt: string): Promise<completion> => {
+const getGeneratedResponse = async (user_prompt: string): Promise<string> => {
 
     let pyramidal_prompt = 'Re-write the text above to be in accordance with the "pyramid principle", which leads with the conclusion, and then provides supporting points. Write concisely and use short, clear sentences.'
 
@@ -38,9 +30,22 @@ const getGeneratedResponse = async (user_prompt: string): Promise<completion> =>
 
     let filtered_response = response.data.choices[0].text
 
-    let cleaned_response = filtered_response.replace('The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.', '')
+    let array_to_cleanse_from: Array<string> = [
+        'The "pyramid principle" states that the conclusion should be stated first, followed by the supporting points.',
+        'The "pyramid principle" states that the conclusion should be stated first, and then the supporting points. In other words, the conclusion should be at the top of the pyramid, with the supporting points below.'
+    ]
 
-    return cleaned_response
+    // function that checks whether filtered_response contains any of the strings in array_to_cleanse_from and if it does, replaces them with '' and returns the updated response
+    const cleaned_response = (filtered_response: string, array_to_cleanse_from: Array<string>): string => {
+        for (let i = 0; i < array_to_cleanse_from.length; i++) {
+            if (filtered_response.includes(array_to_cleanse_from[i])) {
+                filtered_response = filtered_response.replace(array_to_cleanse_from[i], '')
+            }
+        }
+        return filtered_response
+    }
+
+    return filtered_response
 }
 
 export default getGeneratedResponse
