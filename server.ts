@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const port = process.env.port || 3000
 const path = require('path')
-import getGeneratedResponse from './response'
+import { getGeneratedResponse } from './response'
 
 // Bodyparser middleware
 const bodyParser = require('body-parser');

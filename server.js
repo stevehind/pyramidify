@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 // Return the prompt and its result
 app.get('/prompt/', function (req, res) {
     var prompt = req.query.prompt;
-    response_1["default"](prompt).then(function (result) {
+    response_1.getGeneratedResponse(prompt).then(function (result) {
         var displayResult = result;
         res.render('result', { prompt: prompt, result: displayResult });
     })["catch"](function (err) {
