@@ -6,18 +6,27 @@ html(lang="en")
   body
     div.container.center.text-center
         h1 Pyramid-ify your writing!
-        h3 Apply the 'pyramid principle' to your writing: start with the answer, and substantiate it with further points. Stop burying the lede!
-        form(
-            method="GET"
-            action="/prompt/"
-        )
-            label(for="prompt") Enter what you want to pyramid-ify:
-            br 
-            textarea#prompt(name="prompt" rows="10" cols="100")
-            br
-            br
-            //- a button, lablled "Go !" with nice styling
-            input(type="submit" value="Go !" class="button")
+        h3 Apply the 'pyramid principle' to your writing: start with the answer, and substantiate it with further points.
+        h3 Stop burying the lede!
+        style.
+          textarea {
+            font-family: 'Arial', Arial, monospace;
+          }
+        div.container.center
+          form(
+              method="GET"
+              action="/prompt/"
+          )
+              label(for="prompt") Enter what you want to pyramid-ify:
+              br 
+              textarea#prompt(name="prompt" rows="10" cols="100")
+              br
+              br
+              input(type="submit" value="Go !" class="button")
+        p
+          | Props as always to 
+          a(href='https://en.wikipedia.org/wiki/Barbara_Minto',target='_blank') Barbara Minto
+          | .
     
     div.container.footer.text-center
       p
