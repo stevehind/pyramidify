@@ -29,7 +29,7 @@ const responseCleaner = (
 
 const getGeneratedResponse = async (user_prompt: string): Promise<string> => {
   let pyramidal_prompt =
-    'Re-write the text above to be in accordance with the "pyramid principle", which leads with the conclusion, and then provides supporting points. Write concisely and use short, clear sentences.';
+    'Re-write the text above to be in accordance with the "pyramid principle", which leads with the conclusion, and then provides supporting points. Write concisely and use short, clear sentences. Do not describe what the pyramid principle states.';
 
   let prompt_to_provide = `
     """
@@ -37,10 +37,8 @@ const getGeneratedResponse = async (user_prompt: string): Promise<string> => {
     """
     ${pyramidal_prompt}
     `;
-  // console.log(
-  //     `The prompt to provide is:
-  //     ${prompt_to_provide}`
-  // )
+
+  console.log(`User prompt: ${user_prompt}`);
 
   const response = await openai.createCompletion({
     model: 'text-davinci-002',

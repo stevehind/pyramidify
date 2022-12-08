@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.responseCleaner = exports.getGeneratedResponse = void 0;
 require('dotenv').config();
-var _a = require("openai"), Configuration = _a.Configuration, OpenAIApi = _a.OpenAIApi;
+var _a = require('openai'), Configuration = _a.Configuration, OpenAIApi = _a.OpenAIApi;
 var configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY
 });
@@ -66,10 +66,11 @@ var getGeneratedResponse = function (user_prompt) { return __awaiter(void 0, voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                pyramidal_prompt = 'Re-write the text above to be in accordance with the "pyramid principle", which leads with the conclusion, and then provides supporting points. Write concisely and use short, clear sentences.';
+                pyramidal_prompt = 'Re-write the text above to be in accordance with the "pyramid principle", which leads with the conclusion, and then provides supporting points. Write concisely and use short, clear sentences. Do not describe what the pyramid principle states.';
                 prompt_to_provide = "\n    \"\"\"\n    " + user_prompt + "\n    \"\"\"\n    " + pyramidal_prompt + "\n    ";
+                console.log("User prompt: " + user_prompt);
                 return [4 /*yield*/, openai.createCompletion({
-                        model: "text-davinci-002",
+                        model: 'text-davinci-002',
                         prompt: prompt_to_provide,
                         temperature: 0.6,
                         max_tokens: 800
@@ -82,7 +83,7 @@ var getGeneratedResponse = function (user_prompt) { return __awaiter(void 0, voi
                     // Common bad second sentences
                     'In other words, start with the answer, and then provide the evidence',
                     'In other words, the conclusion should be at the top of the pyramid, with the supporting points below',
-                    'In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle"'
+                    'In other words, start with the conclusion, and then provide the supporting points. This is how the text would look if it were written in accordance with the "pyramid principle:"',
                 ];
                 clean_response = responseCleaner(response_text, starting_phrase, array_to_cleanse_from);
                 return [2 /*return*/, clean_response];
